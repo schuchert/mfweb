@@ -2,19 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ed6986c6-5b22-48bf-843a-f3faeae34bc7" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/test/java/com/schuchert/welc/v2/CurrencyConversionShould.java" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/WelcExamples/com/schuchert/welc/CurrencyConversion2.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/out/test/WelcExamples/com/schuchert/welc/CurrencyConversionShould$4.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/out/test/WelcExamples/com/schuchert/welc/CurrencyConversionShould$5.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/out/test/WelcExamples/com/schuchert/welc/CurrencyConversionShould$6.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/out/test/WelcExamples/com/schuchert/welc/CurrencyConversionShould$CurrencyConversion2_testingSubclass.class" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/out/test/WelcExamples/com/schuchert/welc/backup_plan/CurrencyConversionTestDoubledTest$5.class" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/com/schuchert/welc/CurrencyConversion2.java" afterPath="$PROJECT_DIR$/src/main/java/com/schuchert/welc/v2/CurrencyConversion.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../ModernMockingTools.xml" afterPath="$PROJECT_DIR$/../../ModernMockingTools.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WelcExamples.iml" afterPath="$PROJECT_DIR$/WelcExamples.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WelcExamples.ipr" afterPath="$PROJECT_DIR$/WelcExamples.ipr" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WelcExamples.iws" afterPath="$PROJECT_DIR$/WelcExamples.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/com/schuchert/welc/CurrencyConversionShould.java" afterPath="$PROJECT_DIR$/src/test/java/com/schuchert/welc/CurrencyConversionShould.java" />
     </list>
     <ignored path="WelcExamples.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -113,7 +108,7 @@
       <file leaf-file-name="ModernMockingTools.xml" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/../../ModernMockingTools.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="526" column="0" selection-start="35257" selection-end="35257" vertical-scroll-proportion="0.95914745">
+            <state line="627" column="64" selection-start="42702" selection-end="42702" vertical-scroll-proportion="0.5328597">
               <folding />
             </state>
           </provider>
@@ -816,7 +811,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/../../ModernMockingTools.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="526" column="0" selection-start="35257" selection-end="35257" vertical-scroll-proportion="0.95914745">
+        <state line="627" column="64" selection-start="42702" selection-end="42702" vertical-scroll-proportion="0.5328597">
           <folding />
         </state>
       </provider>

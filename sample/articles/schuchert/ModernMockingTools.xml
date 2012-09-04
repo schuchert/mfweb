@@ -30,7 +30,7 @@
             </p>
             <p>Fast forward to late 2011 where I was teaching a class in Berlin and asked to
                 give a presentation at a user's group (<a href="http://vimeo.com/31927512">you
-                    can see that talk here</a>). In the that video you can see me fuddle about trying
+                    can see that talk here</a>). In that video you can see me fuddle about trying
                 to get some legacy code under test using JMockIt and in the end I manage to do so
                 without actually changing the underlying code. What you don't see in the video
                 is that next day in class we take the resulting code and apply more traditional
@@ -54,7 +54,7 @@
                     <p>Before delving into the method itself, first observe that this is a static method. In Java, C#,
                         C++ (and many other languages), static methods are always bound at compile (or by link) time.
                         What this means is that code calling static methods is directly coupled to those methods. The
-                        selection of the method and the calling mechanism are selected too early to easily to allow
+                        selection of the method and the calling mechanism are selected too early to easily allow
                         tests to setup an environment in which they can divert to something the test controls. It is
                         possible to call a different static method at runtime using what Michael Feathers calls a "link
                         seam." In the case of Java, you could make sure a different version of the class with the static
@@ -73,9 +73,9 @@
                     <section>
                         <H>Required</H>
                         <p>The method to get the known symbols is static and in the same class. This makes it impossible
-                            within the language to simulate it or otherwise not perform validation. While generally
-                            it is not inherently a bad idea to always perform validation, it does increase the testing
-                            burden, which makes tests somewhat more fragile as they depend on a larger number of things
+                            within the language to simulate it or otherwise not perform validation. While it may seem
+                            a good idea to always perform validation, it does increase the testing burden, which makes
+                            tests somewhat more fragile as they depend on a larger number of things
                             that could change over time. That is only scratching the surface. It might seem that always
                             testing validation when testing other things makes the checks on validation more thorough,
                             in fact such testing typically represents duplicated rather than deeper testing; it adds
@@ -96,7 +96,7 @@
                             people would suggest that validation before parsing is essential. In a sense it is; to
                             get some valid input, I need valid currency symbols in the real system. However, for the
                             purpose of testing, I do not need the real system, so the requirement of passing validation
-                            is really incidental. If we check that validation and we check that parsing works, then
+                            is really incidental. If we check that validation woks and we check that parsing works, then
                             is there any likelihood that what we've written won't work? I think not and so I don't
                             see the need for a fully-integrated functional test. Someone might disagree with me. On a
                             real project I'd probably write one because the argument would take more time than just
@@ -171,7 +171,7 @@
                             . As this code is written, there is no language-defined way to avoid the use of this class.
                             You can use a link seam by testing with a different jar file (or classpath). In a pinch I'll
                             consider doing that, but not if I have access to the code and can change it, or, as we'll
-                            see, access to what I'd call fourth generation mocking tools like
+                            see, access to what I'd call fourth generation mocking tool like
                             <a
                                     href="http://code.google.com/p/jmockit/">JMockIt
                             </a>
@@ -319,10 +319,9 @@
                         fragment="test_v2_jmockit" cssClass="brush: java"/>
                 <p>Notice the creation of an anonymous inner class using
                     <i>
-                        <b>NonStrictExpectations</b>
+                        <b>NonStrictExpectations</b>?
                     </i>
-                    ? This form
-                    tells , JMockIt to do something with the Currency Conversion
+                    This form tells JMockIt to do something with the CurrencyConversion
                     <i>
                         <b>class</b>
                     </i>
@@ -330,9 +329,9 @@
                     method in this case). The code in the inner set of {} is a standard Java instance initializer. Code
                     executed in that instance initializer tells JMockIt to replace the method executed,
                     <i>
-                        <b>currencySymbols</b>
+                        <b>currencySymbols</b>.
                     </i>
-                    . This is an example of a partial mocking of the class; we replace one of the methods in the class
+                    This is an example of a partial mocking of the class; we replace one of the methods in the class
                     such that any time it is called, it returns whatever is assigned to the inherited field "result".
                 </p>
                 <p>This involve some black magic. JMockIt is doing some Java bytecode magic and this code uses the
@@ -376,7 +375,6 @@
                             </i>
                             , which was the return value from the previous line, so this is much more involved overall.
                         </li>
-                        <li></li>
                     </ul>
                 </p>
                 <p>Here is one way to take care of these three issues in one fell swoop:</p>
@@ -385,9 +383,9 @@
                         fragment="test_v3_setup_jmockit" cssClass="brush: java"/>
                 <p>In this use of
                     <i>
-                        <b>NonStrictExpectations</b>
+                        <b>NonStrictExpectations</b>,
                     </i>
-                    , there is no parameter passed in on the first line, meaning we are working with instances in some
+                    there is no parameter passed in on the first line, meaning we are working with instances in some
                     way rather than static stuff. This anonymous inner class has three fields: DefaultHttpClient,
                     HttpResponse, HttpEntity. Those classes are wholly replaced in the Java classloader for this test
                     only. This means, for example, calling new DefaultHttpClient will return an instance of the
@@ -454,7 +452,7 @@
                     Often, before trying to touch some code, we need to get it under test so we know if we broke
                     anything after making changes. This is called <a
                             href="http://en.wikipedia.org/wiki/Characterization_test">Characterization
-                        Testing</a>. Poorly written code like this typically makes this very hard. While it is still
+                        Testing</a>. Poorly written code like this typically makes doing so very hard. While it is still
                     hard, at least we are able to do so without touching the production code. Having characterization
                     tests around code makes refactoring safer.
                 </p>
@@ -547,8 +545,8 @@
                 <p>A common concern raised is what about making all of those extracted methods protected? It does not
                     bother me because I believe test-ability is more important than design. That's actually a false
                     dichotomy but it sounds controversial so I like to say it anyway. In fact, many of these "protected
-                    methods" are complex enough to warrant individual classes. Introduce dependency inversion suddenly
-                    I'm wiring in dependent objects that are under my control, with override-able methods and
+                    methods" are complex enough to warrant individual classes. Next, introduce dependency inversion and
+                    suddenly I'm wiring in dependent objects that are under my control, with override-able methods and
                     checking individual parts of this overall flow become a snap. Divide and conquer.
                 </p>
             </section>
@@ -586,7 +584,7 @@
                         fragment="test_final" cssClass="brush: java"/>
                 <p>Now which one do you want to maintain?</p>
                 <p>Notice, a little bit of refactoring makes the final JMockIt test much better. In fact, the amount of
-                    refactoring required to write this version of the test smaller than the amount I did refactor.
+                    refactoring required to write this version of the test is smaller than the amount I did refactor.
                     Simply extracting methods would have been enough to greatly improve the JMockIt test. Notice,
                     however, that JMockIt did not force this. Not using a mocking tool or using a tool like Mockito
                     would have forced me to do some amount of refactoring to get this class under test.
@@ -596,7 +594,7 @@
         <section ID="Closing the Feedback Loop">
             <H>Closing the Feedback Loop</H>
             <H>Background</H>
-            <p>What happens when people work<a href="http://en.wikipedia.org/wiki/Open-loop_controller">open
+            <p>What happens when people work <a href="http://en.wikipedia.org/wiki/Open-loop_controller">open
                 loop</a>? That is, you write some code and then tools like JMockIt make it possible to go back in
                 and write tests after the fact without having to suffer for poor decisions? I ask because this
                 example demonstrates such a situation. The original code is a mess, JMockIt allowed me to write a
@@ -627,7 +625,7 @@
                 other hand, JMockIt actually requires more discipline to use effectively because it allows me to leave
                 in a bit more of a mess and still accomplish what I want to accomplish.
             </p>
-            <p>Maybe this is a red herring. I generally practice<a
+            <p>Maybe this is a red herring. I generally practice <a
                     href="http://butunclebob.com/ArticleS.UncleBob.TheThreeRulesOfTdd">Test Driven Development</a>.
                 While I don't have experience practicing TDD on a real project using JMockIt, I do with Mockito and I
                 don't think I have any issues with over using it. I still have a problem of sometimes being too
