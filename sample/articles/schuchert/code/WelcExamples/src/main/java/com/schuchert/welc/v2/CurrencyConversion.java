@@ -1,4 +1,4 @@
-package com.schuchert.welc;
+package com.schuchert.welc.v2;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpException;
@@ -18,16 +18,16 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class CurrencyConversion2 {
+public class CurrencyConversion {
     static Map<String, String> allCurrenciesCache;
     static long lastCacheRead = Long.MAX_VALUE;
 
     //<codeFragment name = "instanceDelegator">
-    private static CurrencyConversion2 instance;
+    private static CurrencyConversion instance;
 
-    private static CurrencyConversion2 getInstance() {
+    private static CurrencyConversion getInstance() {
         if (instance == null) {
-            instance = new CurrencyConversion2();
+            instance = new CurrencyConversion();
         }
 
         return instance;
@@ -142,8 +142,8 @@ public class CurrencyConversion2 {
     }
     //</codeFragment>
 
-    public static CurrencyConversion2 reset(CurrencyConversion2 other) {
-        CurrencyConversion2 original = instance;
+    public static CurrencyConversion reset(CurrencyConversion other) {
+        CurrencyConversion original = instance;
         instance = other;
         return original;
     }

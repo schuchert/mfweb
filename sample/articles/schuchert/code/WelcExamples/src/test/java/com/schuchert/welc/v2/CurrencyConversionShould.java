@@ -1,4 +1,4 @@
-package com.schuchert.welc;
+package com.schuchert.welc.v2;
 
 import mockit.NonStrictExpectations;
 import org.apache.http.HttpEntity;
@@ -85,4 +85,81 @@ public class CurrencyConversionShould {
     }
     //</codeFragment>
 
+    //<codeFragment name="test_v4">
+    @Test
+    public void returnExpectedConversion_v4() throws Exception {
+        final ByteArrayInputStream bais = new ByteArrayInputStream(
+                "<div id=\"converter_results\"><ul><li><b>1 USD = 0.98 EUR</b>"
+                        .getBytes());
+
+        new NonStrictExpectations() {
+            DefaultHttpClient httpclient;
+            HttpResponse response;
+            HttpEntity entity;
+
+            {
+                httpclient.execute((HttpUriRequest) any);
+                result = response;
+                response.getEntity();
+                result = entity;
+                entity.getContent();
+                result = bais;
+            }
+        };
+
+        new NonStrictExpectations(CurrencyConversion.class) {
+            {
+                CurrencyConversion.currencySymbols();
+                result = mapFrom("USD", "EUR");
+            }
+        };
+        BigDecimal result = CurrencyConversion.convertFromTo("USD", "EUR");
+        assertThat(result.subtract(new BigDecimal(2)), is(lessThanOrEqualTo(new BigDecimal(0.001))));
+    }
+    //</codeFragment>
+
+    //<codeFragment name="test_v5">
+    class CurrencyConversion2_testingSubclass extends CurrencyConversion {
+        @Override
+        public void validateCurrencies(String fromCurrency, String toCurrency) {
+        }
+
+        @Override
+        public Map<String, String> getAllCurrencySymbols() {
+            return mapFrom("USD", "EUR");
+        }
+
+        @Override
+        public String getPage(String fromCurrency, String toCurrency) {
+            return "<div id=\"converter_results\"><ul><li><b>1 USD = 0.98 EUR</b>";
+        }
+    }
+
+    @Test
+    public void returnExpectedConversion_v5() throws Exception {
+        CurrencyConversion original = CurrencyConversion.reset(new CurrencyConversion2_testingSubclass());
+
+        BigDecimal result = CurrencyConversion.convertFromTo("USD", "EUR");
+
+        assertThat(result.subtract(new BigDecimal(2)), is(lessThanOrEqualTo(new BigDecimal(0.001))));
+
+        CurrencyConversion.reset(original);
+    }
+    //</codeFragment>
+
+    //<codeFragment name="test_final">
+    @Test
+    public void returnExpectedConversion_final() throws Exception {
+        new NonStrictExpectations(CurrencyConversion.class) {
+            CurrencyConversion c;
+            {
+                c.validateCurrencies(anyString, anyString);
+                c.getPage(anyString, anyString);
+                result = "<div id=\"converter_results\"><ul><li><b>1 USD = 0.98 EUR</b>";
+            }
+        };
+        BigDecimal result = CurrencyConversion.convertFromTo("USD", "EUR");
+        assertThat(result.subtract(new BigDecimal(2)), is(lessThanOrEqualTo(new BigDecimal(0.001))));
+    }
+    //</codeFragment>
 }

@@ -81,10 +81,29 @@
                             in fact such testing typically represents duplicated rather than deeper testing; it adds
                             bulk without increasing value.
                         </p>
-                        <p>Consider that I just want to verify parsing is correct. Is this temporal coupling
-                            essentially or incidental? I think most people would say it is essential. Personally, I
-                            think it's incidental. However, what I hope we can agree on is that if I could verify
-                            parsing independently from validation, that would make checking things easier. In
+                        <p>All I want to do is verify that parsing is correct. As written, validation and parsing
+                            must be done together, in a particular order. That order seems logical; to have input
+                            I need valid currencies. However, while that may seem like a necessary constraint, nothing
+                            about parsing depends on valid currencies, nor should it. It just cares that the text
+                            to parse follows a form, not that part of that form happens to additionally include valid
+                            currency symbols. So the validation's business is bleeding unnecessarily into the next step.
+                            I'd say this is an example of unnecessary temporal coupling. While parsing does follow
+                            validation in time, it should not therefore follow that validation must be required to
+                            allow us to verify parsing. A given test knows what it is testing. It knows, for example,
+                            if the input it wants to be parsed is valid or not. So forcing validation before parsing
+                            is incidental to how the code was written. It is not essential for parsing.</p>
+                        <p>This last point is worth emphasizing as it is a common misconception. In my experience, most
+                            people would suggest that validation before parsing is essential. In a sense it is; to
+                            get some valid input, I need valid currency symbols in the real system. However, for the
+                            purpose of testing, I do not need the real system, so the requirement of passing validation
+                            is really incidental. If we check that validation and we check that parsing works, then
+                            is there any likelihood that what we've written won't work? I think not and so I don't
+                            see the need for a fully-integrated functional test. Someone might disagree with me. On a
+                            real project I'd probably write one because the argument would take more time than just
+                            writing an automated check. However, breaking things down into smaller and smaller pieces
+                            is both an essential skill and it takes years to learn. However, even if you disagree with
+                            me on that point, I hope we can agree on is that if I could verify parsing independently
+                            from validation, that would make checking things easier. In
                             <book isbn='0932633498'>An Introduction to General Systems Thinking</book>, Weinberg
                             describes the
                             <a href="http://schuchert.wikispaces.com/Fundamental+Terms+With+Examples#SquareLawOfComputation">
@@ -464,9 +483,9 @@
                     this is not contrived).
                 </p>
                 <p>While I might try to do this test-first, in fact, I have an existing JMockIt test, so instead I'm
-                    going to simply make the necessary changes. I'll do this in a new class called CurrencyConversion2
-                    (the source for this blog is generated from source code, so I need to keep the original version
-                    around).
+                    going to simply make the necessary changes. I'll do this by copying CurrencyConversion into a new
+                    package with the name v2 added to it (the source for this blog is generated from source code, so I
+                    need to keep the original version around).
                 </p>
                 <p>To introduce an instance delegator:
                     <ul>
@@ -482,22 +501,21 @@
                     synchronized):
                 </p>
                 <insertCode
-                        file="WelcExamples/src/main/java/com/schuchert/welc/CurrencyConversion2.java"
+                        file="WelcExamples/src/main/java/com/schuchert/welc/v2/CurrencyConversion.java"
                         fragment="instanceDelegator" cssClass="brush: java"/>
             </section>
             <section>
                 <H>Extract a few methods</H>
-                <p>There are several opportunities to extract some methods, so here's a version of CurrencyConversion2
+                <p>There are several opportunities to extract some methods, so here's a version of v2/CurrencyConversion
                     after a few method extractions:
                 </p>
                 <insertCode
-                        file="WelcExamples/src/main/java/com/schuchert/welc/CurrencyConversion2.java"
+                        file="WelcExamples/src/main/java/com/schuchert/welc/v2/CurrencyConversion.java"
                         fragment="convert_refactored" cssClass="brush: java"/>
-                <p>Here is a version of the last test targeting this class. The only change is replacing
-                    CurrencyConversion with CurrencyConversion2 (this test passes):
+                <p>Here is a version of the last test targeting this class (the one in the v2 package). This test passes:
                 </p>
                 <insertCode
-                        file="WelcExamples/src/test/java/com/schuchert/welc/CurrencyConversionShould.java"
+                        file="WelcExamples/src/test/java/com/schuchert/welc/v2/CurrencyConversionShould.java"
                         fragment="test_v4" cssClass="brush: java"/>
             </section>
             <section>
@@ -505,7 +523,7 @@
                 <p>Now I'll rewrite this test using hand-written test doubles instead JMockIt. Rather than show all of
                     the intermediate steps, I'll just show a final result:
                     <insertCode
-                            file="WelcExamples/src/test/java/com/schuchert/welc/CurrencyConversionShould.java"
+                            file="WelcExamples/src/test/java/com/schuchert/welc/v2/CurrencyConversionShould.java"
                             fragment="test_v5" cssClass="brush: java"/>
                 </p>
                 <p>This test produces the same result as the JMockIt test doing much of the work by hand.</p>
@@ -541,13 +559,13 @@
                     <b>Using JMockIt</b>
                 </i>
                 <insertCode
-                        file="WelcExamples/src/test/java/com/schuchert/welc/CurrencyConversionShould.java"
+                        file="WelcExamples/src/test/java/com/schuchert/welc/v2/CurrencyConversionShould.java"
                         fragment="test_v4" cssClass="brush: java"/>
                 <i>
                     <b>Using Hand-rolled mocks and Refactoring</b>
                 </i>
                 <insertCode
-                        file="WelcExamples/src/test/java/com/schuchert/welc/CurrencyConversionShould.java"
+                        file="WelcExamples/src/test/java/com/schuchert/welc/v2/CurrencyConversionShould.java"
                         fragment="test_v5" cssClass="brush: java"/>
                 <p>If you have to support test code, which version do you prefer? Wait, don't answer yet.</p>
             </section>
@@ -564,7 +582,7 @@
                     the changes made to the production code?
                 </p>
                 <insertCode
-                        file="WelcExamples/src/test/java/com/schuchert/welc/CurrencyConversionShould.java"
+                        file="WelcExamples/src/test/java/com/schuchert/welc/v2/CurrencyConversionShould.java"
                         fragment="test_final" cssClass="brush: java"/>
                 <p>Now which one do you want to maintain?</p>
                 <p>Notice, a little bit of refactoring makes the final JMockIt test much better. In fact, the amount of
