@@ -6,7 +6,6 @@ class PageSkeleton
     @footer = footer
     @css = cssArray
     @js = []
-    @js_literal = ''
     @banner_photo = nil
     @is_draft = false
   end
@@ -27,7 +26,6 @@ class PageSkeleton
         end
         @html << @footer
         @js.each {|url| @html.js url}
-        @html << @js_literal
       end
     end
   end
@@ -57,11 +55,6 @@ class PageSkeleton
   def with_js *arg
     result = self.dup
     result.instance_variable_set(:@js, arg.flatten)
-    return result
-  end
-  def with_literal_js arg
-    result = self.dup
-    result.instance_variable_set(:@js_literal, arg)
     return result
   end
   def as_draft

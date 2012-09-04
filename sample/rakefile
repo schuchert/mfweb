@@ -57,22 +57,23 @@ end
 # Schuchert Article
 SCH_INC = 'include/'
 FileList['articles/schuchert/ModernMockingTools.xml'].each do |src|
-    target = File.join(BUILD_DIR + 'articles', 'ModernMockingTools.html')
-    file target => [src] do
-        skeleton = Mfweb::Core::Site.skeleton.with_css('article.css', SCH_INC + 'shCore.css', SCH_INC + 'shCoreDefault.css', SCH_INC + 'shThemeDefault.css')
-        skeleton = skeleton.with_js 'include/shCore.js',  'include/shBrushJava.js'
-        skeleton = skeleton.with_literal_js '<script type=\'text/javascript\'>SyntaxHighlighter.all()</script>'
-        # transformer = 'articles/flexible/flexible.rb'
-        # require transformer
-        maker = Mfweb::Article::ArticleMaker.new(src, target, skeleton, FlexibleTr)
-        maker.code_server = Mfweb::Article::CodeServer.new 'articles/schuchert/code'
-    
-        # need to set up the demonstration of these
-        # maker.bib_server = Bibliography.new 'bib.xml'
-        # footnotes
-        # images
-        maker.run
-   end
+  target = File.join(BUILD_DIR + 'articles', 'ModernMockingTools.html')
+  file target => [src] do
+    skeleton = Mfweb::Core::Site.
+      skeleton.with_css('article.css', 
+                        SCH_INC + 'shCore.css', 
+                        SCH_INC + 'shCoreDefault.css', 
+                        SCH_INC + 'shThemeDefault.css')
+    skeleton = skeleton.with_js('include/shCore.js',  
+                                'include/shBrushJava.js', 
+                                'include/addCodeFormatting.js')
+    transformer = Mfweb::Article::PaperTransformer
+    maker = Mfweb::Article::ArticleMaker.
+      new(src, target, skeleton, transformer)
+    maker.code_server = Mfweb::Article::CodeServer.
+      new('articles/schuchert/code')    
+    maker.run
+  end
    task :articles => target
    copyTask 'articles/schuchert/include/*', 'articles/include', :articles
    sassTask '../css/article.scss', 'articles', :articles
