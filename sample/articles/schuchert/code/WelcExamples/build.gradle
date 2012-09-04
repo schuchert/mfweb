@@ -1,0 +1,19 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+ 
+repositories {
+  mavenCentral()
+}
+ 
+dependencies {
+  compile group: 'org.apache.httpcomponents', 
+          name: 'httpclient', 
+          version: '4.0-alpha4'
+  testCompile group: 'mockit', name: 'jmockit', version: '0.999+'
+  testCompile group: 'org.mockito', name: 'mockito-all', version: '1.9.0+'
+  testCompile group: 'junit', name: 'junit', version: '4.10+'
+  testCompile group: 'org.hamcrest', name: 'hamcrest-all', version: '1.1+'
+}
+
+tasks.eclipse.dependsOn(cleanEclipse)
