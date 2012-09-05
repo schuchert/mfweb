@@ -13,8 +13,7 @@
         with legacy code and the possible negative implications of using those tools.
     </abstract>
     <body>
-        <section ID="background">
-            <p>In
+             <p>In
                 <book isbn='0131177052'>Working Effectively with Legacy Code</book>
                 Michael Feathers defines legacy code as code without automated tests. Sometime
                 in 2010 I was introduced to
@@ -38,8 +37,7 @@
                 results are staggering and I believe they speak for themselves. What follows is that
                 story recreated in full, which much of the fuddling about, I hope, removed.
             </p>
-        </section>
-        <section ID="the usual suspects">
+         <section>
             <H>The Usual Suspects</H>
             <p>To get started, here is some code for your consideration:</p>
             <insertCode file="WelcExamples/src/main/java/com/schuchert/welc/CurrencyConversion.java"
@@ -48,9 +46,8 @@
                 real purpose of this code is to discuss poor coding choices and their effect on our ability to
                 understand, test, and maintain this code.
             </p>
-            <section ID="Challenges to Testing">
+            <section>
                 <H>Challenges to Testing</H>
-                <section ID="static method">
                     <p>Before delving into the method itself, first observe that this is a static method. In Java, C#,
                         C++ (and many other languages), static methods are always bound at compile (or by link) time.
                         What this means is that code calling static methods is directly coupled to those methods. The
@@ -60,8 +57,7 @@
                         seam." In the case of Java, you could make sure a different version of the class with the static
                         method is available in the classpath earlier. There is more on this below.
                     </p>
-                </section>
-                <section ID="Validation">
+                <section>
                     <H>Validation</H>
                     <p>The first thing this method does is perform some basic validation. It confirms that the symbols
                         provided as method arguments actually exist. To do this, it calls another method in the same
@@ -127,7 +123,8 @@
                         <H>Traditional Options</H>
                         <p>To address these issues, we could do a number of things:</p>
                         <ul>
-                            <li>Extract validation to its own class by using<a
+                            <li>Extract validation to its own class by
+                            using <a
                                     href="http://xunitpatterns.com/Sprout%20Class.html">Sprout Class</a>, or
                                 <a
                                         href="http://www.refactoring.com/catalog/extractClass.html">Extract Class
@@ -186,7 +183,8 @@
                     <section>
                         <H>Violates Dependency Inversion</H>
                         <p>In this example, the business domain is currency conversion but the business logic directly
-                            uses the HttpClient. This is a violation of the<a
+                            uses the HttpClient. This is a violation
+                            of the <a
                                     href="http://www.objectmentor.com/resources/articles/dip.pdf">Dependency Inversion
                                 Principle</a>. In this case, if someone wants to get a currency conversion, as the code
                             is written, trying to do so introduces direct, compile-time coupling to a class that needs
@@ -239,7 +237,7 @@
                 </section>
                 <section ID="parsing">
                     <H>Parsing</H>
-                    Now that the stream has been converted into a string, it's time to parse the results:
+                    <p>Now that the stream has been converted into a string, it's time to parse the results:</p>
                     <insertCode
                             file="WelcExamples/src/main/java/com/schuchert/welc/CurrencyConversion.java"
                             fragment="parsing" cssClass="brush: java"/>
@@ -266,7 +264,7 @@
                 </section>
             </section>
         </section>
-        <section ID="Diving In">
+        <section>
             <H>Diving In</H>
             <p>Modern mocking tools make most of the things I mention above irrelevant; at least on the surface.
                 Rather than try to fix these things in the production code first, let's dive in by trying to get this
@@ -347,7 +345,7 @@
                         file="WelcExamples/src/main/java/com/schuchert/welc/CurrencyConversion.java"
                         fragment="httpClient" cssClass="brush: java"/>
                 <p>This code is a bit more complex since it is embedded in the method, but we can get past this
-                    problem. However, to do so will be a bit more work:
+                    problem. However, to do so will be a bit more work:</p>
                     <ul>
                         <li>The first two lines call
                             <i>
@@ -376,7 +374,6 @@
                             , which was the return value from the previous line, so this is much more involved overall.
                         </li>
                     </ul>
-                </p>
                 <p>Here is one way to take care of these three issues in one fell swoop:</p>
                 <insertCode
                         file="WelcExamples/src/test/java/com/schuchert/welc/CurrencyConversionShould.java"
@@ -396,7 +393,7 @@
                     using build scripts, this is using a library, which makes it available to Java code "within" the
                     language, rather than outside of the language.
                 </p>
-                <p>This code replaces those three classes but with what?
+                <p>This code replaces those three classes but with what?</p>
                     <ul>
                         <li>The
                             <i>
@@ -419,8 +416,7 @@
                             method will always return "bais", which we will see in the next section.
                         </li>
                     </ul>
-                </p>
-                <p>Make no mistake, this is powerful stuff. In fact, I have a personal rule of thumb: If I think
+                 <p>Make no mistake, this is powerful stuff. In fact, I have a personal rule of thumb: If I think
                     something is cool, then it may not be appropriate for real development. JMockIt makes my "cool
                     spider senses" tingle on overdrive.
                 </p>
@@ -462,7 +458,7 @@
                 </p>
             </section>
         </section>
-        <section ID="Going Old School">
+        <section>
             <H>Going Old School</H>
             <section>
                 <H>We've addressed the symptom, not the cause</H>
@@ -485,7 +481,7 @@
                     package with the name v2 added to it (the source for this blog is generated from source code, so I
                     need to keep the original version around).
                 </p>
-                <p>To introduce an instance delegator:
+                <p>To introduce an instance delegator:</p>
                     <ul>
                         <li>Introduce a static instance of the class.</li>
                         <li>Copy the static methods into instance methods (you'll need to create new method names as
@@ -493,7 +489,6 @@
                         </li>
                         <li>Change the static methods to call the instance methods on the internal static instance.</li>
                     </ul>
-                </p>
                 <p>Here's one way to do that (the lazy initialization of the internal instance is deliberate and if
                     you're concerned about threading issues, we could use double-checked locking or just make the method
                     synchronized):
@@ -519,11 +514,10 @@
             <section>
                 <H>Testing subclass</H>
                 <p>Now I'll rewrite this test using hand-written test doubles instead JMockIt. Rather than show all of
-                    the intermediate steps, I'll just show a final result:
+                    the intermediate steps, I'll just show a final result:</p>
                     <insertCode
                             file="WelcExamples/src/test/java/com/schuchert/welc/v2/CurrencyConversionShould.java"
                             fragment="test_v5" cssClass="brush: java"/>
-                </p>
                 <p>This test produces the same result as the JMockIt test doing much of the work by hand.</p>
             </section>
         </section>
@@ -553,15 +547,17 @@
             <section>
                 <H>First test versus second test</H>
                 <p>Here are the two tests again, for comparison:</p>
-                <i>
+                <p><i>
                     <b>Using JMockIt</b>
-                </i>
+                </i></p>
                 <insertCode
                         file="WelcExamples/src/test/java/com/schuchert/welc/v2/CurrencyConversionShould.java"
                         fragment="test_v4" cssClass="brush: java"/>
+                <p>
                 <i>
                     <b>Using Hand-rolled mocks and Refactoring</b>
                 </i>
+                </p>
                 <insertCode
                         file="WelcExamples/src/test/java/com/schuchert/welc/v2/CurrencyConversionShould.java"
                         fragment="test_v5" cssClass="brush: java"/>
@@ -591,9 +587,8 @@
                 </p>
             </section>
         </section>
-        <section ID="Closing the Feedback Loop">
+        <section>
             <H>Closing the Feedback Loop</H>
-            <H>Background</H>
             <p>What happens when people work <a href="http://en.wikipedia.org/wiki/Open-loop_controller">open
                 loop</a>? That is, you write some code and then tools like JMockIt make it possible to go back in
                 and write tests after the fact without having to suffer for poor decisions? I ask because this
