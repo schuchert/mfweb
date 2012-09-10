@@ -7,11 +7,12 @@
         <author-name>Brett L. Schuchert</author-name>
         <author-url>http://schuchert.wikispaces.com</author-url>
         <author-bio>
-        <p>Brett is currently with ThoughtWorks and he has numerous years
-           of experience across a number of domains and disciplines including 
-           Training (from 1985), solution-based consulting (from 1992) and 
-           coaching (from 2000). He likes to both develop and train/coach, 
-           changing emphasis between the two every 4 – 6 years.</p>
+            <p>Brett is currently with ThoughtWorks and he has numerous years
+                of experience across a number of domains and disciplines including
+                Training (from 1985), solution-based consulting (from 1992) and
+                coaching (from 2000). He likes to both develop and train/coach,
+                changing emphasis between the two every 4 – 6 years.
+            </p>
         </author-bio>
         <author-photo src="brett.jpg"/>
     </author>
@@ -20,31 +21,31 @@
         with legacy code and the possible negative implications of using those tools.
     </abstract>
     <body>
-             <p>In
-                <book isbn='0131177052'>Working Effectively with Legacy Code</book>
-                Michael Feathers defines legacy code as code without automated tests. Sometime
-                in 2010 I was introduced to
-                <a href="http://code.google.com/p/jmockit/">JMockIt</a>
-                and shown how it allows us to write automated tests that seemingly violate the
-                semantics of Java. For example, it is possible to replace a static method during
-                the execution of a test. If I were to use the "old" style suggested by Michael Feathers,
-                I'd do something like introduce an instance delegator to make it possible to write
-                the test I wanted to write. Now, with a modern mocking tool, I could just skip that step.
-                My initial reaction was amazement as I saw this as a way to open up existing
-                code that is hard to test and get something written faster and with less mucking
-                about in existing code.
-            </p>
-            <p>Fast forward to late 2011 where I was teaching a class in Berlin and asked to
-                give a presentation at a user's group (<a href="http://vimeo.com/31927512">you
-                    can see that talk here</a>). In that video you can see me fuddle about trying
-                to get some legacy code under test using JMockIt and in the end I manage to do so
-                without actually changing the underlying code. What you don't see in the video
-                is that next day in class we take the resulting code and apply more traditional
-                legacy refactoring techniques to it and then rewrite the JMockIt-based test. The
-                results are staggering and I believe they speak for themselves. What follows is that
-                story recreated in full, which much of the fuddling about, I hope, removed.
-            </p>
-         <section>
+        <p>In
+            <book isbn='0131177052'>Working Effectively with Legacy Code</book>
+            Michael Feathers defines legacy code as code without automated tests. Sometime
+            in 2010 I was introduced to
+            <a href="http://code.google.com/p/jmockit/">JMockIt</a>
+            and shown how it allows us to write automated tests that seemingly violate the
+            semantics of Java. For example, it is possible to replace a static method during
+            the execution of a test. If I were to use the "old" style suggested by Michael Feathers,
+            I'd do something like introduce an instance delegator to make it possible to write
+            the test I wanted to write. Now, with a modern mocking tool, I could just skip that step.
+            My initial reaction was amazement as I saw this as a way to open up existing
+            code that is hard to test and get something written faster and with less mucking
+            about in existing code.
+        </p>
+        <p>Fast forward to late 2011 where I was teaching a class in Berlin and asked to
+            give a presentation at a user's group (<a href="http://vimeo.com/31927512">you
+                can see that talk here</a>). In that video you can see me fuddle about trying
+            to get some legacy code under test using JMockIt and in the end I manage to do so
+            without actually changing the underlying code. What you don't see in the video
+            is that next day in class we take the resulting code and apply more traditional
+            legacy refactoring techniques to it and then rewrite the JMockIt-based test. The
+            results are staggering and I believe they speak for themselves. What follows is that
+            story recreated in full, which much of the fuddling about, I hope, removed.
+        </p>
+        <section>
             <H>The Usual Suspects</H>
             <p>To get started, here is some code for your consideration:</p>
             <insertCode file="WelcExamples/src/main/java/com/schuchert/welc/CurrencyConversion.java"
@@ -55,15 +56,15 @@
             </p>
             <section>
                 <H>Challenges to Testing</H>
-                    <p>Before delving into the method itself, first observe that this is a static method. In Java, C#,
-                        C++ (and many other languages), static methods are always bound at compile (or by link) time.
-                        What this means is that code calling static methods is directly coupled to those methods. The
-                        selection of the method and the calling mechanism are selected too early to easily allow
-                        tests to setup an environment in which they can divert to something the test controls. It is
-                        possible to call a different static method at runtime using what Michael Feathers calls a "link
-                        seam." In the case of Java, you could make sure a different version of the class with the static
-                        method is available in the classpath earlier. There is more on this below.
-                    </p>
+                <p>Before delving into the method itself, first observe that this is a static method. In Java, C#,
+                    C++ (and many other languages), static methods are always bound at compile (or by link) time.
+                    What this means is that code calling static methods is directly coupled to those methods. The
+                    selection of the method and the calling mechanism are selected too early to easily allow
+                    tests to setup an environment in which they can divert to something the test controls. It is
+                    possible to call a different static method at runtime using what Michael Feathers calls a "link
+                    seam." In the case of Java, you could make sure a different version of the class with the static
+                    method is available in the classpath earlier. There is more on this below.
+                </p>
                 <section>
                     <H>Validation</H>
                     <p>The first thing this method does is perform some basic validation. It confirms that the symbols
@@ -94,7 +95,8 @@
                             validation in time, it should not therefore follow that validation must be required to
                             allow us to verify parsing. A given test knows what it is testing. It knows, for example,
                             if the input it wants to be parsed is valid or not. So forcing validation before parsing
-                            is incidental to how the code was written. It is not essential for parsing.</p>
+                            is incidental to how the code was written. It is not essential for parsing.
+                        </p>
                         <p>This last point is worth emphasizing as it is a common misconception. In my experience, most
                             people would suggest that validation before parsing is essential. In a sense it is; to
                             get some valid input, I need valid currency symbols in the real system. However, for the
@@ -131,8 +133,8 @@
                         <p>To address these issues, we could do a number of things:</p>
                         <ul>
                             <li>Extract validation to its own class by
-                            using <a
-                                    href="http://xunitpatterns.com/Sprout%20Class.html">Sprout Class</a>, or
+                                using<a
+                                        href="http://xunitpatterns.com/Sprout%20Class.html">Sprout Class</a>, or
                                 <a
                                         href="http://www.refactoring.com/catalog/extractClass.html">Extract Class
                                 </a>
@@ -191,7 +193,7 @@
                         <H>Violates Dependency Inversion</H>
                         <p>In this example, the business domain is currency conversion but the business logic directly
                             uses the HttpClient. This is a violation
-                            of the <a
+                            of the<a
                                     href="http://www.objectmentor.com/resources/articles/dip.pdf">Dependency Inversion
                                 Principle</a>. In this case, if someone wants to get a currency conversion, as the code
                             is written, trying to do so introduces direct, compile-time coupling to a class that needs
@@ -212,7 +214,12 @@
                 </section>
                 <section ID="fileIo">
                     <H>File I/O</H>
-                    <p>The HttpClient makes an<i> <b>InputStream</b></i> available, which is then read to completion:</p>
+                    <p>The HttpClient makes an
+                        <i>
+                            <b>InputStream</b>
+                        </i>
+                        available, which is then read to completion:
+                    </p>
                     <insertCode
                             file="WelcExamples/src/main/java/com/schuchert/welc/CurrencyConversion.java"
                             fragment="readingFromStream" cssClass="brush: java"/>
@@ -352,35 +359,36 @@
                         file="WelcExamples/src/main/java/com/schuchert/welc/CurrencyConversion.java"
                         fragment="httpClient" cssClass="brush: java"/>
                 <p>This code is a bit more complex since it is embedded in the method, but we can get past this
-                    problem. However, to do so will be a bit more work:</p>
-                    <ul>
-                        <li>The first two lines call
-                            <i>
-                                <b>new</b>
-                            </i>
-                            . We need to make those uses of the new operator return a class under our control.
-                        </li>
-                        <li>The next line calls the
-                            <i>
-                                <b>execute</b>
-                            </i>
-                            method on an
-                            <i>
-                                <b>HttpClient</b>
-                            </i>
-                            , so we'll need to get that under control.
-                        </li>
-                        <li>The last line calls the
-                            <i>
-                                <b>getEntity</b>
-                            </i>
-                            method on an
-                            <i>
-                                <b>HttpResponse</b>
-                            </i>
-                            , which was the return value from the previous line, so this is much more involved overall.
-                        </li>
-                    </ul>
+                    problem. However, to do so will be a bit more work:
+                </p>
+                <ul>
+                    <li>The first two lines call
+                        <i>
+                            <b>new</b>
+                        </i>
+                        . We need to make those uses of the new operator return a class under our control.
+                    </li>
+                    <li>The next line calls the
+                        <i>
+                            <b>execute</b>
+                        </i>
+                        method on an
+                        <i>
+                            <b>HttpClient</b>
+                        </i>
+                        , so we'll need to get that under control.
+                    </li>
+                    <li>The last line calls the
+                        <i>
+                            <b>getEntity</b>
+                        </i>
+                        method on an
+                        <i>
+                            <b>HttpResponse</b>
+                        </i>
+                        , which was the return value from the previous line, so this is much more involved overall.
+                    </li>
+                </ul>
                 <p>Here is one way to take care of these three issues in one fell swoop:</p>
                 <insertCode
                         file="WelcExamples/src/test/java/com/schuchert/welc/CurrencyConversionShould.java"
@@ -401,29 +409,29 @@
                     language, rather than outside of the language.
                 </p>
                 <p>This code replaces those three classes but with what?</p>
-                    <ul>
-                        <li>The
-                            <i>
-                                <b>HttpClient.execute</b>
-                            </i>
-                            method will always return response, which is an instance of the JMockIt-created HttpResponse
-                            subclass.
-                        </li>
-                        <li>The
-                            <i>
-                                <b>HttpResponse.getEntity</b>
-                            </i>
-                            method will always return entity, which is an instance of the JMockIt-created HttpEntity
-                            subclass.
-                        </li>
-                        <li>The
-                            <i>
-                                <b>HttpEntity.getContent</b>
-                            </i>
-                            method will always return "bais", which we will see in the next section.
-                        </li>
-                    </ul>
-                 <p>Make no mistake, this is powerful stuff. In fact, I have a personal rule of thumb: If I think
+                <ul>
+                    <li>The
+                        <i>
+                            <b>HttpClient.execute</b>
+                        </i>
+                        method will always return response, which is an instance of the JMockIt-created HttpResponse
+                        subclass.
+                    </li>
+                    <li>The
+                        <i>
+                            <b>HttpResponse.getEntity</b>
+                        </i>
+                        method will always return entity, which is an instance of the JMockIt-created HttpEntity
+                        subclass.
+                    </li>
+                    <li>The
+                        <i>
+                            <b>HttpEntity.getContent</b>
+                        </i>
+                        method will always return "bais", which we will see in the next section.
+                    </li>
+                </ul>
+                <p>Make no mistake, this is powerful stuff. In fact, I have a personal rule of thumb: If I think
                     something is cool, then it may not be appropriate for real development. JMockIt makes my "cool
                     spider senses" tingle on overdrive.
                 </p>
@@ -453,7 +461,7 @@
                 <p>On the one hand, this is pretty impressive. We've managed to exercise the code end-to-end without
                     touching it. If we want to write something that uses this class, we now have a way to do it.
                     Often, before trying to touch some code, we need to get it under test so we know if we broke
-                    anything after making changes. This is called <a
+                    anything after making changes. This is called<a
                             href="http://en.wikipedia.org/wiki/Characterization_test">Characterization
                         Testing</a>. Poorly written code like this typically makes doing so very hard. While it is still
                     hard, at least we are able to do so without touching the production code. Having characterization
@@ -489,13 +497,13 @@
                     need to keep the original version around).
                 </p>
                 <p>To introduce an instance delegator:</p>
-                    <ul>
-                        <li>Introduce a static instance of the class.</li>
-                        <li>Copy the static methods into instance methods (you'll need to create new method names as
-                            static methods and instance methods cannot have the same name and signature).
-                        </li>
-                        <li>Change the static methods to call the instance methods on the internal static instance.</li>
-                    </ul>
+                <ul>
+                    <li>Introduce a static instance of the class.</li>
+                    <li>Copy the static methods into instance methods (you'll need to create new method names as
+                        static methods and instance methods cannot have the same name and signature).
+                    </li>
+                    <li>Change the static methods to call the instance methods on the internal static instance.</li>
+                </ul>
                 <p>Here's one way to do that (the lazy initialization of the internal instance is deliberate and if
                     you're concerned about threading issues, we could use double-checked locking or just make the method
                     synchronized):
@@ -512,7 +520,8 @@
                 <insertCode
                         file="WelcExamples/src/main/java/com/schuchert/welc/v2/CurrencyConversion.java"
                         fragment="convert_refactored" cssClass="brush: java"/>
-                <p>Here is a version of the last test targeting this class (the one in the v2 package). This test passes:
+                <p>Here is a version of the last test targeting this class (the one in the v2 package). This test
+                    passes:
                 </p>
                 <insertCode
                         file="WelcExamples/src/test/java/com/schuchert/welc/v2/CurrencyConversionShould.java"
@@ -521,11 +530,18 @@
             <section>
                 <H>Testing subclass</H>
                 <p>Now I'll rewrite this test using hand-written test doubles instead JMockIt. Rather than show all of
-                    the intermediate steps, I'll just show a final result:</p>
-                    <insertCode
-                            file="WelcExamples/src/test/java/com/schuchert/welc/v2/CurrencyConversionShould.java"
-                            fragment="test_v5" cssClass="brush: java"/>
+                    the intermediate steps, I'll just show a final result:
+                </p>
+                <insertCode
+                        file="WelcExamples/src/test/java/com/schuchert/welc/v2/CurrencyConversionShould.java"
+                        fragment="test_v5" cssClass="brush: java"/>
                 <p>This test produces the same result as the JMockIt test doing much of the work by hand.</p>
+                <p>Note, to make this possible, we need to allow for the new-created Singleton class to be set and
+                    reset:
+                </p>
+                <insertCode
+                        file="WelcExamples/src/main/java/com/schuchert/welc/v2/CurrencyConversion.java"
+                        fragment="resettable_singleton" cssClass="brush: java"/>
             </section>
         </section>
         <section ID="Observations">
@@ -554,16 +570,18 @@
             <section>
                 <H>First test versus second test</H>
                 <p>Here are the two tests again, for comparison:</p>
-                <p><i>
-                    <b>Using JMockIt</b>
-                </i></p>
+                <p>
+                    <i>
+                        <b>Using JMockIt</b>
+                    </i>
+                </p>
                 <insertCode
                         file="WelcExamples/src/test/java/com/schuchert/welc/v2/CurrencyConversionShould.java"
                         fragment="test_v4" cssClass="brush: java"/>
                 <p>
-                <i>
-                    <b>Using Hand-rolled mocks and Refactoring</b>
-                </i>
+                    <i>
+                        <b>Using Hand-rolled mocks and Refactoring</b>
+                    </i>
                 </p>
                 <insertCode
                         file="WelcExamples/src/test/java/com/schuchert/welc/v2/CurrencyConversionShould.java"
@@ -596,7 +614,7 @@
         </section>
         <section>
             <H>Closing the Feedback Loop</H>
-            <p>What happens when people work <a href="http://en.wikipedia.org/wiki/Open-loop_controller">open
+            <p>What happens when people work<a href="http://en.wikipedia.org/wiki/Open-loop_controller">open
                 loop</a>? That is, you write some code and then tools like JMockIt make it possible to go back in
                 and write tests after the fact without having to suffer for poor decisions? I ask because this
                 example demonstrates such a situation. The original code is a mess, JMockIt allowed me to write a
@@ -627,7 +645,7 @@
                 other hand, JMockIt actually requires more discipline to use effectively because it allows me to leave
                 in a bit more of a mess and still accomplish what I want to accomplish.
             </p>
-            <p>Maybe this is a red herring. I generally practice <a
+            <p>Maybe this is a red herring. I generally practice<a
                     href="http://butunclebob.com/ArticleS.UncleBob.TheThreeRulesOfTdd">Test Driven Development</a>.
                 While I don't have experience practicing TDD on a real project using JMockIt, I do with Mockito and I
                 don't think I have any issues with over using it. I still have a problem of sometimes being too

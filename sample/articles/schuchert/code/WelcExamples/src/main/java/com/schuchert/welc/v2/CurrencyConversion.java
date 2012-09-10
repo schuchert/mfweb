@@ -70,7 +70,7 @@ public class CurrencyConversion {
                     }
                     if (l.indexOf("currencyTable") >= 0)
                         foundTable = true;
-                    else
+                   else
                         continue;
                 }
             }
@@ -142,9 +142,11 @@ public class CurrencyConversion {
     }
     //</codeFragment>
 
+    //<codeFragment name = "resettable_singleton">
     public static CurrencyConversion reset(CurrencyConversion other) {
         CurrencyConversion original = instance;
         instance = other;
         return original;
     }
+    //</codeFragment>
 }
